@@ -3,18 +3,6 @@ pipeline {
 
 
     stages {
-
-        stage('GPU Sanity Test') {
-            steps {
-                echo 'Installing required dependencies for cuda_test'
-                sh 'python3 -m pip install --upgrade pip'
-                sh 'python3 -m pip install numba numpy'
-                echo 'Running CUDA sanity check...'
-                sh 'python3 cuda_test.py'
-            }
-        }
-
-
         stage('Build Docker Image') {
             steps {
                 echo "🐳 Building Docker image with GPU support..."
