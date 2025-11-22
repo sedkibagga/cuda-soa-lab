@@ -75,11 +75,14 @@ def gpu_matrix_add(A: np.ndarray, B: np.ndarray):
 
 @app.post("/add")
 async def add_matrices(file_a: UploadFile = File(...), file_b: UploadFile = File(...)):
+	import io
 	try:
 		a_bytes = await file_a.read()
 		b_bytes = await file_b.read()
-		A = np.load(a_bytes)[list(np.load(a_bytes).files)[0]]
-		B = np.load(b_bytes)[list(np.load(b_bytes).files)[0]]
+		with np.load(io.BytesIO(a_bytes)) as a_npz:
+			A = a_npz[a_npz.files[0]]
+		with np.load(io.BytesIO(b_bytes)) as b_npz:
+			B = b_npz[b_npz.files[0]]
 	except Exception:
 		raise HTTPException(status_code=400, detail="Invalid .npz files")
 	if A.shape != B.shape:
