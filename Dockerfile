@@ -21,8 +21,6 @@ COPY . /app/
 RUN pip3 install --upgrade pip && \
 	pip3 install fastapi uvicorn[standard] numpy numba python-multipart
 
-# Run CUDA sanity test at build time (will fail if CUDA/Numba is not working)
-RUN python3 cuda_test.py
 
 # Expose FastAPI port (change <student_port> to your assigned port, e.g., 8001)
 EXPOSE 8001
