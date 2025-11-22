@@ -15,7 +15,7 @@ pipeline {
                 echo "🚀 Deploying Docker container..."
                 sh 'docker stop gpu-service || true'
                 sh 'docker rm gpu-service || true'
-                sh 'docker run --gpus all -d --name gpu-service -p 8001:8001 gpu-service'
+                sh 'docker run --gpus all -d --name gpu-service -p 8002:8002 gpu-service'
             }
         }
     }
