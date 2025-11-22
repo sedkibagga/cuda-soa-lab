@@ -7,24 +7,27 @@ pipeline {
         stage('GPU Sanity Test') {
             steps {
                 echo 'Installing required dependencies for cuda_test'
-                // TODO: write here
+                sh 'python3 -m pip install --upgrade pip'
+                sh 'python3 -m pip install numba numpy'
                 echo 'Running CUDA sanity check...'
-                // TODO: write here
+                sh 'python3 cuda_test.py'
             }
         }
 
 
         stage('Build Docker Image') {
             steps {
-                // TODO: write here
                 echo "🐳 Building Docker image with GPU support..."
+                sh 'docker build -t gpu-service .'
             }
         }
 
         stage('Deploy Container') {
             steps {
                 echo "🚀 Deploying Docker container..."
-                // TODO: write here
+                sh 'docker stop gpu-service || true'
+                sh 'docker rm gpu-service || true'
+                sh 'docker run --gpus all -d --name gpu-service -p 8001:8001 gpu-service'
             }
         }
     }
